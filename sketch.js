@@ -7,7 +7,10 @@ let players,
 	p3Sprite,
 	player4,
 	p4Sprite,
-	playerSpeed;
+	background,
+	playerSpeed,
+	musicTiles,
+	walls;
 
 function preload() {
 	new Canvas(480, 270);
@@ -16,6 +19,7 @@ function preload() {
 	p2Sprite = loadImage("sprites/player2.png");
 	p3Sprite = loadImage("sprites/player3.png");
 	p4Sprite = loadImage("sprites/player4.png");
+	background = loadImage("sprites/background.png");
 	playersSpeed = 2.5;
 
 }
@@ -24,10 +28,12 @@ function setup() {
 
 	players = new Group();
   	players.friction = 0;
- 	players.layer = 0;
 	players.width = 24;
 	players.height = 32;
 	players.rotationLock = true;
+	players.overlaps(players);
+	players.layer = 2;
+	
 	players.addSprite = function(sheet) {
 		this.spriteSheet = sheet;
 		this.addAnis({
@@ -47,6 +53,7 @@ function setup() {
 		this.anis.offset.x = 0;
 		this.anis.frameDelay = 8;
 	}
+	
 	players.bBtn = function() {
 		this.changeAni("punch1");
 	}
@@ -89,16 +96,11 @@ function setup() {
 	}
 	players.stop = function () {
 		this.changeAni('idle');
-		this.speed = 3;
 		this.speed = 0;
 	}
-
-
-
-
-	player1 = new players.Sprite();
+	player1 = new players.Sprite(48, 208);
 	player1.addSprite(p1Sprite);
-	
+	player1.animations.offset.x = 3;
 
 	player2 = new players.Sprite();
 	player2.addSprite(p2Sprite);
@@ -109,14 +111,39 @@ function setup() {
 	player4 = new players.Sprite();
 	player4.addSprite(p4Sprite);
 
+// music tiles
+	musicTiles = new Group();
+	musicTiles.width = 16;
+	musicTiles.height = 16;
+	musicTiles.rotationLock = true;
+	musicTiles.friction = 0;
+	musicTiles.layer = 1;
+	musicTiles.collider = NONE;
+
+	tile1 = new musicTiles.Sprite(0, 64);
+
+//walls
+
+	walls = new Group();
+	walls.collider = STATIC;
+
+	wall1 = new walls.Sprite(80,24, 160, 48);
+	wall2 = new walls.Sprite(184 ,72, 48, 144);
+	wall3 = new walls.Sprite(212 ,100, 4, 152);
+	wall4 = new walls.Sprite(192 ,152, 32, 20);
+	
 	allSprites.pixelPerfect = true;
+	allSprites.debug = true;
 }
 
 function draw() {
-	background('skyblue');
+	clear();
+	image(background, 0, 0);
 	checkControllers();
 
-
+	if (player1.overlapping(tile1)) {
+		player1.changeAni("climb");
+	}
 	
 
 }
