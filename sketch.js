@@ -1,11 +1,22 @@
-let players, player1, player2;
-let p1Sprite, p2Sprite;
+let players, 
+	player1, 
+	p1Sprite,
+	player2,
+	p2Sprite,
+	player3,
+	p3Sprite,
+	player4,
+	p4Sprite,
+	playerSpeed;
 
 function preload() {
 	new Canvas(480, 270);
 	displayMode('maxed', 'pixelated');
 	p1Sprite = loadImage("sprites/player1b.png");
 	p2Sprite = loadImage("sprites/player2.png");
+	p3Sprite = loadImage("sprites/player3.png");
+	p4Sprite = loadImage("sprites/player4.png");
+	playersSpeed = 2.5;
 
 }
 
@@ -32,10 +43,56 @@ function setup() {
 			jump: { row: 9, frames: 4},
 			climb: { row: 10, frames: 4}
 		});
-		this.changeAni('idle');
+		this.changeAni('walk');
 		this.anis.offset.x = 0;
 		this.anis.frameDelay = 8;
 	}
+	players.bBtn = function() {
+		this.changeAni("punch1");
+	}
+	players.aBtn = function() {
+		this.changeAni("punch2");
+	}
+	players.yBtn = function() {
+		this.changeAni("punch3");
+	}
+	players.xBtn = function() {
+		this.changeAni("headbutt");
+	}
+	players.rtBtn = function() {
+		this.changeAni("kick1");
+	}
+	players.ltBtn = function() {
+		this.changeAni("kick2");
+	}
+	players.upBtn = function () {
+		this.changeAni("strafe");
+		this.direction = -90;
+		this.speed = playersSpeed;
+	}
+	players.downBtn = function () {
+		this.changeAni("strafe");
+		this.direction = 90;
+		this.speed = playersSpeed;
+	}
+	players.rightBtn = function () {
+		this.changeAni("walk");
+		this.direction = 0;
+		this.speed = playersSpeed;
+		this.mirror.x = false;
+	}
+	players.leftBtn = function () {
+		this.changeAni("walk");
+		this.direction = 180;
+		this.speed = playersSpeed;
+		this.mirror.x = true;
+	}
+	players.stop = function () {
+		this.changeAni('idle');
+		this.speed = 3;
+		this.speed = 0;
+	}
+
 
 
 
@@ -46,9 +103,139 @@ function setup() {
 	player2 = new players.Sprite();
 	player2.addSprite(p2Sprite);
 
+	player3 = new players.Sprite();
+	player3.addSprite(p3Sprite);
+
+	player4 = new players.Sprite();
+	player4.addSprite(p4Sprite);
+
 	allSprites.pixelPerfect = true;
 }
 
 function draw() {
 	background('skyblue');
+	checkControllers();
+
+
+	
+
+}
+
+function checkControllers() {
+		//player1
+	if (controllers[0]) {
+	
+		if (contros[0].pressing('up')) {
+			player1.upBtn();
+		} else if (contros[0].pressing('down')) {
+			player1.downBtn();
+		} else if (contros[0].pressing("left")) {
+			player1.leftBtn();
+		} else if (contros[0].pressing("right")) {
+			player1.rightBtn();
+		} else {
+			player1.stop();
+		}
+		
+		if (contros[0].pressing('lt')) {
+			player1.ltBtn();
+		} else if (contros[0].pressing('rt')) {
+			player1.rtBtn();
+		} else if (contros[0].pressing('y')) {
+			player1.yBtn();
+		} else if (contros[0].pressing('x')) {
+			player1.xBtn();
+		} else if (contros[0].pressing('a')) {
+			player1.aBtn();
+		} else if (contros[0].pressing('b')) {
+			player1.bBtn();
+		} 
+	}
+
+		//player2
+	if (controllers[1]) {
+		if (contros[1].pressing('up')) {
+			player2.upBtn();
+		} else if (contros[1].pressing('down')) {
+			player2.downBtn();
+		} else if (contros[1].pressing("left")) {
+			player2.leftBtn();
+		} else if (contros[1].pressing("right")) {
+			player2.rightBtn();
+		} else {
+			player2.stop();
+		}
+		
+		if (contros[1].pressing('lt')) {
+			player2.ltBtn();
+		} else if (contros[1].pressing('rt')) {
+			player2.rtBtn();
+		} else if (contros[1].pressing('y')) {
+			player2.yBtn();
+		} else if (contros[1].pressing('x')) {
+			player2.xBtn();
+		} else if (contros[1].pressing('a')) {
+			player2.aBtn();
+		} else if (contros[1].pressing('b')) {
+			player2.bBtn();
+		} 
+	}
+
+	//player3
+	if (controllers[2]) {
+		if (contros[2].pressing('up')) {
+			player3.upBtn();
+		} else if (contros[2].pressing('down')) {
+			player3.downBtn();
+		} else if (contros[2].pressing("left")) {
+			player3.leftBtn();
+		} else if (contros[2].pressing("right")) {
+			player3.rightBtn();
+		} else {
+			player3.stop();
+		}
+		
+		if (contros[2].pressing('lt')) {
+			player3.ltBtn();
+		} else if (contros[2].pressing('rt')) {
+			player3.rtBtn();
+		} else if (contros[2].pressing('y')) {
+			player3.yBtn();
+		} else if (contros[2].pressing('x')) {
+			player3.xBtn();
+		} else if (contros[2].pressing('a')) {
+			player3.aBtn();
+		} else if (contros[2].pressing('b')) {
+			player3.bBtn();
+		} 
+	}
+
+	//player4
+	if (controllers[3]) {
+		if (contros[3].pressing('up')) {
+			player4.upBtn();
+		} else if (contros[3].pressing('down')) {
+			player4.downBtn();
+		} else if (contros[3].pressing("left")) {
+			player4.leftBtn();
+		} else if (contros[3].pressing("right")) {
+			player4.rightBtn();
+		} else {
+			player4.stop();
+		}
+		
+		if (contros[3].pressing('lt')) {
+			player4.ltBtn();
+		} else if (contros[3].pressing('rt')) {
+			player4.rtBtn();
+		} else if (contros[3].pressing('y')) {
+			player4.yBtn();
+		} else if (contros[3].pressing('x')) {
+			player4.xBtn();
+		} else if (contros[3].pressing('a')) {
+			player4.aBtn();
+		} else if (contros[3].pressing('b')) {
+			player4.bBtn();
+		} 
+	}
 }
