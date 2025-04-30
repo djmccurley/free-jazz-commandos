@@ -10,22 +10,29 @@ let players,
 	background,
 	playerSpeed,
 	musicTiles,
+	tile1,
+	ladders,
+	phoneSprite,
+	dumpsterSprite,
 	walls;
 
 function preload() {
 	new Canvas(480, 270);
 	displayMode('maxed', 'pixelated');
-	p1Sprite = loadImage("sprites/player1b.png");
+	p1Sprite = loadImage("sprites/player1.png");
 	p2Sprite = loadImage("sprites/player2.png");
 	p3Sprite = loadImage("sprites/player3.png");
 	p4Sprite = loadImage("sprites/player4.png");
 	background = loadImage("sprites/background.png");
+	phoneSprite = loadImage("sprites/phone.png");
+	dumpsterSprite = loadImage("sprites/dumpster.png");
 	playersSpeed = 2.5;
 
 }
 
 function setup() {
 
+	//players object
 	players = new Group();
   	players.friction = 0;
 	players.width = 24;
@@ -98,18 +105,25 @@ function setup() {
 		this.changeAni('idle');
 		this.speed = 0;
 	}
-	player1 = new players.Sprite(48, 208);
+
+	
+
+	//create players 1-4
+	player1 = new players.Sprite(348, 208);
 	player1.addSprite(p1Sprite);
 	player1.animations.offset.x = 3;
 
 	player2 = new players.Sprite();
 	player2.addSprite(p2Sprite);
+	player2.animations.offset.x = 3;
 
 	player3 = new players.Sprite();
 	player3.addSprite(p3Sprite);
+	player3.animations.offset.x = 3;
 
 	player4 = new players.Sprite();
 	player4.addSprite(p4Sprite);
+	player4.animations.offset.x = 3;
 
 // music tiles
 	musicTiles = new Group();
@@ -120,32 +134,70 @@ function setup() {
 	musicTiles.layer = 1;
 	musicTiles.collider = NONE;
 
-	tile1 = new musicTiles.Sprite(0, 64);
-
 //walls
 
 	walls = new Group();
 	walls.collider = STATIC;
+	walls.friction = 0;
+	walls.visible = false;
 
-	wall1 = new walls.Sprite(80,24, 160, 48);
-	wall2 = new walls.Sprite(184 ,72, 48, 144);
-	wall3 = new walls.Sprite(212 ,100, 4, 152);
-	wall4 = new walls.Sprite(192 ,152, 32, 20);
-	
+	let wall1 = new walls.Sprite(80,32, 160, 48);
+	let wall2 = new walls.Sprite(188 ,72, 40, 144);
+	let wall3 = new walls.Sprite(208 ,100, 8, 152);
+	let wall4 = new walls.Sprite(184 ,152, 32, 20);
+	let wall5 = new walls.Sprite(352, 44, 288, 48);
+	let wall6 = new walls.Sprite(380, 145, 252, 64);
+	let dumpsterWall = new walls.Sprite(0, 136, 96, 8);
+	let borderLeft = new walls.Sprite(-14, 135, 2, 400);
+	let borderRight = new walls.Sprite(494, 135, 2, 400);
+	let borderBottom = new walls.Sprite(240, 272, 560, 2);
+
+//ladder tiles
+	ladders = new Group();
+	ladders.collider = NONE;
+	ladders.friction = 0;
+	ladders.visible = false;
+
+	let fence = new ladders.Sprite(80, 88, 160, 80);
+	let ladder = new ladders.Sprite(240, 136, 8, 88);
+
+// phone and dumpster
+	obstacles = new Group;
+	obstacles.collider = NONE;
+	obstacles.friction = 0;
+	obstacles.layer = 0;
+
+	let dumpster = new obstacles.Sprite(32, 152, 48, 40);
+	dumpster.spriteSheet = dumpsterSprite;
+	dumpster.addAnis({
+		exist: {row: 0, frames: 1}
+	});
+
 	allSprites.pixelPerfect = true;
 	allSprites.debug = true;
 }
+
+
 
 function draw() {
 	clear();
 	image(background, 0, 0);
 	checkControllers();
 
-	if (player1.overlapping(tile1)) {
-		player1.changeAni("climb");
-	}
-	
 
+	// if (kb.pressing('up')) {
+	// 	player1.upBtn();
+	// } else if (kb.pressing('down')) {
+	// 	player1.downBtn();
+	// } else if (kb.pressing("left")) {
+	// 	player1.leftBtn();
+	// } else if (kb.pressing("right")) {
+	// 	player1.rightBtn();
+	// } else {
+	// 	player1.stop();
+	// }
+
+	players.overlapping(ladders, climb);
 }
 
 function checkControllers() {
@@ -265,4 +317,8 @@ function checkControllers() {
 			player4.bBtn();
 		} 
 	}
+}
+
+function climb(player, ladder) {
+	player.changeAni('climb');
 }
