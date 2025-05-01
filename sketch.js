@@ -1,12 +1,16 @@
 let players, 
 	player1, 
 	p1Sprite,
+	p1Hitbox,
 	player2,
 	p2Sprite,
+	p2Hitbox,
 	player3,
 	p3Sprite,
+	p3Hitbox,
 	player4,
 	p4Sprite,
+	p4Hitbox,
 	background,
 	playerSpeed,
 	musicTiles,
@@ -14,7 +18,13 @@ let players,
 	ladders,
 	phoneSprite,
 	dumpsterSprite,
+	hitboxes,
+	pianoTiles,
 	walls;
+
+let bass,
+	bassNotes,
+	donk;
 
 function preload() {
 	new Canvas(480, 270);
@@ -26,8 +36,17 @@ function preload() {
 	background = loadImage("sprites/background.png");
 	phoneSprite = loadImage("sprites/phone.png");
 	dumpsterSprite = loadImage("sprites/dumpster.png");
-	playersSpeed = 2.5;
+	playersSpeed = 2;
 
+	donk = new Tone.Sampler({
+		urls: {
+		  C4: "donk.wav"
+		},
+		release: 1,
+		baseUrl: "/audio/"
+	  }).toDestination();
+
+	Tone.context.lookAhead = 0;
 }
 
 function setup() {
@@ -113,26 +132,83 @@ function setup() {
 	player1.addSprite(p1Sprite);
 	player1.animations.offset.x = 3;
 
-	player2 = new players.Sprite();
+	player2 = new players.Sprite(10, 210);
 	player2.addSprite(p2Sprite);
 	player2.animations.offset.x = 3;
 
-	player3 = new players.Sprite();
+	player3 = new players.Sprite(10, 210);
 	player3.addSprite(p3Sprite);
 	player3.animations.offset.x = 3;
 
-	player4 = new players.Sprite();
+	player4 = new players.Sprite(10, 210);
 	player4.addSprite(p4Sprite);
 	player4.animations.offset.x = 3;
 
+// hitboxes for players
+
+	hitboxes = new Group();
+	hitboxes.visible = true;
+	hitboxes.collider = NONE;
+
+	p1Hitbox = new hitboxes.Sprite(player1.x, player1.y-7, 1, 8);
+	p1Hitbox.player = player1;
+	p1Hitbox.controller;
+	let p1Glue = new GlueJoint(player1, p1Hitbox);
+	p1Glue.visible = false;
+
+	p2Hitbox = new hitboxes.Sprite(player2.x, player2.y-7, 1, 8);
+	p2Hitbox.player = player2;
+	p2Hitbox.controller;
+	let p2Glue = new GlueJoint(player2, p2Hitbox);
+	p2Glue.visible = false;
+
+	p3Hitbox = new hitboxes.Sprite(player3.x, player3.y-7, 1, 8);
+	p3Hitbox.player = player3;
+	p3Hitbox.controller;
+	let p3Glue = new GlueJoint(player3, p3Hitbox);
+	p3Glue.visible = false;
+
+	p4Hitbox = new hitboxes.Sprite(player4.x, player4.y-7, 1, 8);
+	p4Hitbox.player = player4;
+	p4Hitbox.controller;
+	let p4Glue = new GlueJoint(player4, p4Hitbox);
+	p4Glue.visible = false;
+
 // music tiles
 	musicTiles = new Group();
-	musicTiles.width = 16;
-	musicTiles.height = 16;
 	musicTiles.rotationLock = true;
 	musicTiles.friction = 0;
 	musicTiles.layer = 1;
 	musicTiles.collider = NONE;
+
+// piano tiles
+	pianoTiles = new musicTiles.Group();
+	pianoTiles.w = 16;
+	pianoTiles.h = 48;
+	pianoTiles.root = "";
+	pianoTiles.bBtn = pianoTiles.root;
+	pianoTiles.aBtn = Tonal.Note.transpose(pianoTiles.root, "3M");
+	pianoTiles.xBtn = Tonal.Note.transpose(pianoTiles.root, "5P");
+	pianoTiles.yBtn = Tonal.Note.transpose(pianoTiles.root, "3m");
+	pianoTiles.rtBtn = Tonal.Note.transpose(pianoTiles.root, "7M");
+	pianoTiles.ltBtn = Tonal.Note.transpose(pianoTiles.root, "7m");
+	
+
+
+
+	// bass starting 280, 184
+	// bass notes array ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "cC"]
+	bassNotes = ["C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
+	for (i=0, j=280; i < bassNotes.length; i++, j+=16) {
+		bass = new pianoTiles.Sprite(j, 184);
+		bass.root = bassNotes[i];
+		bass.text = bass.root;
+		bass.play = function(note) {
+			donk.triggerAttackRelease(note, 1);
+		  }; 
+	}
+
+
 
 //walls
 
@@ -198,6 +274,7 @@ function draw() {
 	// }
 
 	players.overlapping(ladders, climb);
+	hitboxes.overlapping(pianoTiles, playPiano);
 }
 
 function checkControllers() {
@@ -321,4 +398,34 @@ function checkControllers() {
 
 function climb(player, ladder) {
 	player.changeAni('climb');
+}
+
+function playPiano(hitbox, tile) {
+	if (hitbox = p1Hitbox) {
+		if (controllers[0]) {
+			if (contros[0].presses('a')) {
+					tile.play(tile.a);
+				}
+			
+				if (contros[0].presses('b')) {
+					tile.play(tile.b);
+				}
+			
+				if (contros[0].presses('x')) {
+					tile.play(tile.x);
+				}
+			
+				if (contros[0].presses('y')) {
+					tile.play(tile.y);
+				}
+			
+				if (contros[0].presses('rt')) {
+					tile.play(tile.rt);
+				}
+			
+				if (contros[0].presses('lt')) {
+					tile.play(tile.b);
+				}
+		}
+		}
 }
