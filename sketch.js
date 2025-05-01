@@ -185,24 +185,15 @@ function setup() {
 	pianoTiles = new musicTiles.Group();
 	pianoTiles.w = 16;
 	pianoTiles.h = 48;
-	pianoTiles.root = "";
-	pianoTiles.bBtn = pianoTiles.root;
-	pianoTiles.aBtn = Tonal.Note.transpose(pianoTiles.root, "3M");
-	pianoTiles.xBtn = Tonal.Note.transpose(pianoTiles.root, "5P");
-	pianoTiles.yBtn = Tonal.Note.transpose(pianoTiles.root, "3m");
-	pianoTiles.rtBtn = Tonal.Note.transpose(pianoTiles.root, "7M");
-	pianoTiles.ltBtn = Tonal.Note.transpose(pianoTiles.root, "7m");
-	
-
-
+	pianoTiles.note = "";
 
 	// bass starting 280, 184
 	// bass notes array ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B", "cC"]
 	bassNotes = ["C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6"];
 	for (i=0, j=280; i < bassNotes.length; i++, j+=16) {
 		bass = new pianoTiles.Sprite(j, 184);
-		bass.root = bassNotes[i];
-		bass.text = bass.root;
+		bass.note = bassNotes[i];
+		bass.text = bass.note;
 		bass.play = function(note) {
 			donk.triggerAttackRelease(note, 1);
 		  }; 
@@ -400,32 +391,37 @@ function climb(player, ladder) {
 	player.changeAni('climb');
 }
 
-function playPiano(hitbox, tile) {
+function playPiano(hitbox, pianoTile) {
 	if (hitbox = p1Hitbox) {
 		if (controllers[0]) {
 			if (contros[0].presses('a')) {
-					tile.play(tile.a);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
 				}
 			
 				if (contros[0].presses('b')) {
-					tile.play(tile.b);
+				  //square.play(square.note);
+				  pianoTile.play(pianoTile.note);
 				}
 			
 				if (contros[0].presses('x')) {
-					tile.play(tile.x);
+				  //pianoTile.play(pianoTile.note);
+				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 				}
 			
 				if (contros[0].presses('y')) {
-					tile.play(tile.y);
+				  //pianoTile.play(pianoTile.note);
+				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 				}
 			
 				if (contros[0].presses('rt')) {
-					tile.play(tile.rt);
+				  //pianoTile.play(pianoTile.note);
+				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 				}
 			
 				if (contros[0].presses('lt')) {
-					tile.play(tile.b);
+				  //pianoTile.play(pianoTile.note);
+				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 				}
 		}
-		}
+	}
 }
