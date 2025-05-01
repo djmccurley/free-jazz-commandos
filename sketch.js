@@ -26,6 +26,16 @@ let bass,
 	bassNotes,
 	donk;
 
+let rhodes,
+	rhodesNotes,
+	rhodesKeys;
+
+let chromeo,
+	chromeoNotes,
+	chromeoKeys;
+
+let beat;
+
 function preload() {
 	new Canvas(480, 270);
 	displayMode('maxed', 'pixelated');
@@ -45,6 +55,28 @@ function preload() {
 		release: 1,
 		baseUrl: "/audio/"
 	  }).toDestination();
+
+	rhodes = new Tone.Sampler({
+		urls: {
+		  C4: "rhodes.wav"
+		},
+		release: .5,
+		baseUrl: "/audio/"
+	  }).toDestination();
+
+	chromeo = new Tone.Sampler({
+		urls: {
+		  C5: "chromeo.wav"
+		},
+		release: .5,
+		baseUrl: "/audio/"
+	  }).toDestination();
+
+	beat = new Tone.Player("/audio/beat.wav").toDestination();
+	beat.autostart = false;
+	beat.loop = true;
+	beat.volume.value = 6;
+	beat.playbackRate = .88;
 
 	Tone.context.lookAhead = 0;
 }
@@ -199,6 +231,27 @@ function setup() {
 		  }; 
 	}
 
+	chromeoNotes = ["C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5"];
+	for (i=0, j=248; i < bassNotes.length; i++, j+=16) {
+		chromeoKeys = new pianoTiles.Sprite(j, 80);
+		chromeoKeys.h = 32;
+		chromeoKeys.note = chromeoNotes[i];
+		chromeoKeys.text = chromeoKeys.note;
+		chromeoKeys.play = function(note) {
+			chromeo.triggerAttackRelease(note, .5);
+		  }; 
+	}
+
+	rhodesNotes = ["C3", "Db3", "D3", "Eb3", "E3", "F3", "Gb3", "G3", "Ab3", "A3", "Bb3", "B3", "C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5"];
+	for (i=0, j=8; i < rhodesNotes.length; i++, j+=16) {
+		rhodesKeys = new pianoTiles.Sprite(j, 256);
+		rhodesKeys.h = 32;
+		rhodesKeys.note = rhodesNotes[i];
+		rhodesKeys.text = rhodesKeys.note;
+		rhodesKeys.play = function(note) {
+			rhodes.triggerAttackRelease(note, .5);
+		  }; 
+	}
 
 
 //walls
@@ -223,10 +276,10 @@ function setup() {
 	ladders = new Group();
 	ladders.collider = NONE;
 	ladders.friction = 0;
-	ladders.visible = false;
+	ladders.visible = true;
 
 	let fence = new ladders.Sprite(80, 88, 160, 80);
-	let ladder = new ladders.Sprite(240, 136, 8, 88);
+	let ladder = new ladders.Sprite(232, 136, 4, 88);
 
 // phone and dumpster
 	obstacles = new Group;
@@ -244,25 +297,12 @@ function setup() {
 	allSprites.debug = true;
 }
 
-
+////// DRAW LOOP
 
 function draw() {
 	clear();
 	image(background, 0, 0);
 	checkControllers();
-
-
-	// if (kb.pressing('up')) {
-	// 	player1.upBtn();
-	// } else if (kb.pressing('down')) {
-	// 	player1.downBtn();
-	// } else if (kb.pressing("left")) {
-	// 	player1.leftBtn();
-	// } else if (kb.pressing("right")) {
-	// 	player1.rightBtn();
-	// } else {
-	// 	player1.stop();
-	// }
 
 	players.overlapping(ladders, climb);
 	p1Hitbox.overlapping(pianoTiles, p1PlayNote);
@@ -277,6 +317,9 @@ function draw() {
 	p4Hitbox.overlapping(pianoTiles, p4PlayNote);
 	p4Hitbox.overlaps(pianoTiles, p4WalkingNote);
 }
+
+////////////////
+
 
 function checkControllers() {
 		//player1
@@ -471,7 +514,7 @@ function p2PlayNote(hitbox, pianoTile) {
 
 function p3PlayNote(hitbox, pianoTile) {
 	if (controllers[2]) {
-		if (contros[1].presses('a')) {
+		if (contros[2].presses('a')) {
 			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
 			}
 		
@@ -504,7 +547,7 @@ function p3PlayNote(hitbox, pianoTile) {
 
 function p4PlayNote(hitbox, pianoTile) {
 	if (controllers[3]) {
-		if (contros[1].presses('a')) {
+		if (contros[3].presses('a')) {
 			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
 			}
 		
