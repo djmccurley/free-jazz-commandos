@@ -265,7 +265,17 @@ function draw() {
 	// }
 
 	players.overlapping(ladders, climb);
-	hitboxes.overlapping(pianoTiles, playPiano);
+	p1Hitbox.overlapping(pianoTiles, p1PlayNote);
+	p1Hitbox.overlaps(pianoTiles, p1WalkingNote);
+
+	p2Hitbox.overlapping(pianoTiles, p2PlayNote);
+	p2Hitbox.overlaps(pianoTiles, p2WalkingNote);
+
+	p3Hitbox.overlapping(pianoTiles, p3PlayNote);
+	p3Hitbox.overlaps(pianoTiles, p3WalkingNote);
+
+	p4Hitbox.overlapping(pianoTiles, p4PlayNote);
+	p4Hitbox.overlaps(pianoTiles, p4WalkingNote);
 }
 
 function checkControllers() {
@@ -391,37 +401,270 @@ function climb(player, ladder) {
 	player.changeAni('climb');
 }
 
-function playPiano(hitbox, pianoTile) {
-	if (hitbox = p1Hitbox) {
-		if (controllers[0]) {
-			if (contros[0].presses('a')) {
-				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
-				}
-			
-				if (contros[0].presses('b')) {
-				  //square.play(square.note);
-				  pianoTile.play(pianoTile.note);
-				}
-			
-				if (contros[0].presses('x')) {
-				  //pianoTile.play(pianoTile.note);
-				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
-				}
-			
-				if (contros[0].presses('y')) {
-				  //pianoTile.play(pianoTile.note);
-				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
-				}
-			
-				if (contros[0].presses('rt')) {
-				  //pianoTile.play(pianoTile.note);
-				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
-				}
-			
-				if (contros[0].presses('lt')) {
-				  //pianoTile.play(pianoTile.note);
-				  pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
-				}
-		}
+//////////// play notes
+
+function p1PlayNote(hitbox, pianoTile) {
+	if (controllers[0]) {
+		if (contros[0].presses('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[0].presses('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[0].presses('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[0].presses('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[0].presses('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[0].presses('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+function p2PlayNote(hitbox, pianoTile) {
+	if (controllers[1]) {
+		if (contros[1].presses('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[1].presses('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[1].presses('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[1].presses('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[1].presses('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[1].presses('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+function p3PlayNote(hitbox, pianoTile) {
+	if (controllers[2]) {
+		if (contros[1].presses('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[2].presses('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[2].presses('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[2].presses('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[2].presses('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[2].presses('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+function p4PlayNote(hitbox, pianoTile) {
+	if (controllers[3]) {
+		if (contros[1].presses('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[3].presses('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[3].presses('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[3].presses('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[3].presses('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[3].presses('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+/////////////// walking notes
+
+function p1WalkingNote(hitbox, pianoTile) {
+	if (controllers[0]) {
+		if (contros[0].pressing('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[0].pressing('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[0].pressing('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[0].pressing('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[0].pressing('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[0].pressing('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+function p2WalkingNote(hitbox, pianoTile) {
+	if (controllers[1]) {
+		if (contros[1].pressing('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[1].pressing('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[1].pressing('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[1].pressing('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[1].pressing('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[1].pressing('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+function p3WalkingNote(hitbox, pianoTile) {
+	if (controllers[2]) {
+		if (contros[2].pressing('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[2].pressing('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[2].pressing('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[2].pressing('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[2].pressing('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[2].pressing('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
+	}
+}
+
+function p4WalkingNote(hitbox, pianoTile) {
+	if (controllers[3]) {
+		if (contros[3].pressing('a')) {
+			pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3M"));
+			}
+		
+			if (contros[3].pressing('b')) {
+				//square.play(square.note);
+				pianoTile.play(pianoTile.note);
+			}
+		
+			if (contros[3].pressing('x')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
+			}
+		
+			if (contros[3].pressing('y')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
+			}
+		
+			if (contros[3].pressing('rt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
+			}
+		
+			if (contros[3].pressing('lt')) {
+				//pianoTile.play(pianoTile.note);
+				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
+			}
 	}
 }
