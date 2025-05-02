@@ -124,7 +124,7 @@ function preload() {
 
 
 	beat = new Tone.Player("/audio/beat.wav").toDestination();
-	beat.autostart = false;
+	beat.autostart = true;
 	beat.loop = true;
 	beat.volume.value = 6;
 	beat.playbackRate = .88;
@@ -215,22 +215,22 @@ function setup() {
 	player1.addSprite(p1Sprite);
 	player1.animations.offset.x = 3;
 
-	player2 = new players.Sprite(10, 210);
+	player2 = new players.Sprite(60, 210);
 	player2.addSprite(p2Sprite);
 	player2.animations.offset.x = 3;
 
-	player3 = new players.Sprite(10, 210);
+	player3 = new players.Sprite(80, 170);
 	player3.addSprite(p3Sprite);
 	player3.animations.offset.x = 3;
 
-	player4 = new players.Sprite(10, 210);
+	player4 = new players.Sprite(320, 110);
 	player4.addSprite(p4Sprite);
 	player4.animations.offset.x = 3;
 
 // hitboxes for players
 
 	hitboxes = new Group();
-	hitboxes.visible = true;
+	hitboxes.visible = false;
 	hitboxes.collider = NONE;
 
 	p1Hitbox = new hitboxes.Sprite(player1.x, player1.y-8, 1, 4);
@@ -263,6 +263,7 @@ function setup() {
 	musicTiles.friction = 0;
 	musicTiles.layer = 1;
 	musicTiles.collider = NONE;
+	musicTiles.visible = false;
 
 // piano tiles
 	pianoTiles = new musicTiles.Group();
@@ -306,7 +307,7 @@ function setup() {
 
 	saxNotes = [
 		// Octave 3
-		"C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3",
+		"G3", "G#3", "A3", "A#3", "B3",
 		
 		// Octave 4
 		"C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4",
@@ -328,15 +329,18 @@ function setup() {
 			sax.triggerAttackRelease(note, .5);
 		  };
 		
+
+		//if loop for guitar fretboard layout
 		if (j>=132) {
 			k -= 20;
 			if (k > 100) {
 				j = 50;
 			} else {
 				j = -10;
+				i -= 3;
 			}
-			i -= 3;
 		}
+			
 	  }
 
 
@@ -345,7 +349,7 @@ function setup() {
 	walls = new Group();
 	walls.collider = STATIC;
 	walls.friction = 0;
-	walls.visible = true;
+	walls.visible = false;
 
 	let wall1 = new walls.Sprite(80,24, 160, 48);
 	let wall2 = new walls.Sprite(188 ,72, 40, 144);
@@ -380,7 +384,7 @@ function setup() {
 	});
 
 	allSprites.pixelPerfect = true;
-	allSprites.debug = true;
+	allSprites.debug = false;
 }
 
 ////// DRAW LOOP
@@ -606,27 +610,22 @@ function p3PlayNote(hitbox, pianoTile) {
 			}
 		
 			if (contros[2].presses('b')) {
-				//square.play(square.note);
 				pianoTile.play(pianoTile.note);
 			}
 		
 			if (contros[2].presses('x')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 			}
 		
 			if (contros[2].presses('y')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 			}
 		
 			if (contros[2].presses('rt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 			}
 		
 			if (contros[2].presses('lt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
 	}
@@ -639,27 +638,22 @@ function p4PlayNote(hitbox, pianoTile) {
 			}
 		
 			if (contros[3].presses('b')) {
-				//square.play(square.note);
 				pianoTile.play(pianoTile.note);
 			}
 		
 			if (contros[3].presses('x')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 			}
 		
 			if (contros[3].presses('y')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 			}
 		
 			if (contros[3].presses('rt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 			}
 		
 			if (contros[3].presses('lt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
 	}
@@ -674,27 +668,22 @@ function p1WalkingNote(hitbox, pianoTile) {
 			}
 		
 			if (contros[0].pressing('b')) {
-				//square.play(square.note);
 				pianoTile.play(pianoTile.note);
 			}
 		
 			if (contros[0].pressing('x')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 			}
 		
 			if (contros[0].pressing('y')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 			}
 		
 			if (contros[0].pressing('rt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 			}
 		
 			if (contros[0].pressing('lt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
 	}
@@ -707,27 +696,22 @@ function p2WalkingNote(hitbox, pianoTile) {
 			}
 		
 			if (contros[1].pressing('b')) {
-				//square.play(square.note);
 				pianoTile.play(pianoTile.note);
 			}
 		
 			if (contros[1].pressing('x')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 			}
 		
 			if (contros[1].pressing('y')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 			}
 		
 			if (contros[1].pressing('rt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 			}
 		
 			if (contros[1].pressing('lt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
 	}
@@ -740,27 +724,22 @@ function p3WalkingNote(hitbox, pianoTile) {
 			}
 		
 			if (contros[2].pressing('b')) {
-				//square.play(square.note);
 				pianoTile.play(pianoTile.note);
 			}
 		
 			if (contros[2].pressing('x')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 			}
 		
 			if (contros[2].pressing('y')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 			}
 		
 			if (contros[2].pressing('rt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 			}
 		
 			if (contros[2].pressing('lt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
 	}
@@ -773,27 +752,22 @@ function p4WalkingNote(hitbox, pianoTile) {
 			}
 		
 			if (contros[3].pressing('b')) {
-				//square.play(square.note);
 				pianoTile.play(pianoTile.note);
 			}
 		
 			if (contros[3].pressing('x')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "5P"))
 			}
 		
 			if (contros[3].pressing('y')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "3m"))
 			}
 		
 			if (contros[3].pressing('rt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7M"))
 			}
 		
 			if (contros[3].pressing('lt')) {
-				//pianoTile.play(pianoTile.note);
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
 	}
