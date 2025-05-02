@@ -12,7 +12,7 @@ let players,
 	p4Sprite,
 	p4Hitbox,
 	background,
-	playerSpeed,
+	playersSpeed,
 	musicTiles,
 	tile1,
 	ladders,
@@ -33,6 +33,10 @@ let rhodes,
 let chromeo,
 	chromeoNotes,
 	chromeoKeys;
+	
+let sax,
+	saxNotes,
+	saxKeys;
 
 let beat;
 
@@ -71,6 +75,53 @@ function preload() {
 		release: .5,
 		baseUrl: "/audio/"
 	  }).toDestination();
+
+	sax = new Tone.Sampler({
+		urls: {
+			// Octave 3
+			"C#3": "Cs3.mp3",
+			"D3": "D3.mp3",
+			"D#3": "Ds3.mp3",
+			"E3": "E3.mp3",
+			"F3": "F3.mp3",
+			"F#3": "Fs3.mp3",
+			"G3": "G3.mp3",
+			"G#3": "Gs3.mp3",
+			"A#3": "As3.mp3",
+			"B3": "B3.mp3",
+			
+			// Octave 4
+			"C4": "C4.mp3",
+			"C#4": "Cs4.mp3",
+			"D4": "D4.mp3",
+			"D#4": "Ds4.mp3",
+			"E4": "E4.mp3",
+			"F4": "F4.mp3",
+			"F#4": "Fs4.mp3",
+			"G4": "G4.mp3",
+			"G#4": "Gs4.mp3",
+			"A4": "A4.mp3",
+			"A#4": "As4.mp3",
+			"B4": "B4.mp3",
+			
+			// Octave 5
+			"C5": "C5.mp3",
+			"C#5": "Cs5.mp3",
+			"D5": "D5.mp3",
+			"D#5": "Ds5.mp3",
+			"E5": "E5.mp3",
+			"F5": "F5.mp3",
+			"F#5": "Fs5.mp3",
+			"G5": "G5.mp3",
+			"G#5": "Gs5.mp3",
+			"A5": "A5.mp3"
+		  },
+		release: .5,
+		baseUrl: "/audio/sax/"
+		}).toDestination();
+
+	// quena for winds instruments
+
 
 	beat = new Tone.Player("/audio/beat.wav").toDestination();
 	beat.autostart = false;
@@ -182,25 +233,25 @@ function setup() {
 	hitboxes.visible = true;
 	hitboxes.collider = NONE;
 
-	p1Hitbox = new hitboxes.Sprite(player1.x, player1.y-7, 1, 8);
+	p1Hitbox = new hitboxes.Sprite(player1.x, player1.y-8, 1, 4);
 	p1Hitbox.player = player1;
 	p1Hitbox.controller;
 	let p1Glue = new GlueJoint(player1, p1Hitbox);
 	p1Glue.visible = false;
 
-	p2Hitbox = new hitboxes.Sprite(player2.x, player2.y-7, 1, 8);
+	p2Hitbox = new hitboxes.Sprite(player2.x, player2.y-8, 1, 4);
 	p2Hitbox.player = player2;
 	p2Hitbox.controller;
 	let p2Glue = new GlueJoint(player2, p2Hitbox);
 	p2Glue.visible = false;
 
-	p3Hitbox = new hitboxes.Sprite(player3.x, player3.y-7, 1, 8);
+	p3Hitbox = new hitboxes.Sprite(player3.x, player3.y-8, 1, 4);
 	p3Hitbox.player = player3;
 	p3Hitbox.controller;
 	let p3Glue = new GlueJoint(player3, p3Hitbox);
 	p3Glue.visible = false;
 
-	p4Hitbox = new hitboxes.Sprite(player4.x, player4.y-7, 1, 8);
+	p4Hitbox = new hitboxes.Sprite(player4.x, player4.y-8, 1, 4);
 	p4Hitbox.player = player4;
 	p4Hitbox.controller;
 	let p4Glue = new GlueJoint(player4, p4Hitbox);
@@ -253,15 +304,50 @@ function setup() {
 		  }; 
 	}
 
+	saxNotes = [
+		// Octave 3
+		"C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3",
+		
+		// Octave 4
+		"C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4",
+		
+		// Octave 5
+		"C5", "C#5", "D5", "D#5", "E5", "F5", "F#5", "G5", "G#5", "A5"
+	  ];
+	  for (i=0, j=70, k=140; i<saxNotes.length; i++, j+=20) {
+		if (k <= 48) {
+			break;
+		}
+		
+		saxKeys = new pianoTiles.Sprite(j, k);
+		saxKeys.w = 20
+		saxKeys.h = 20;
+		saxKeys.note = saxNotes[i];
+		saxKeys.text = saxKeys.note;
+		saxKeys.play = function(note) {
+			sax.triggerAttackRelease(note, .5);
+		  };
+		
+		if (j>=132) {
+			k -= 20;
+			if (k > 100) {
+				j = 50;
+			} else {
+				j = -10;
+			}
+			i -= 3;
+		}
+	  }
+
 
 //walls
 
 	walls = new Group();
 	walls.collider = STATIC;
 	walls.friction = 0;
-	walls.visible = false;
+	walls.visible = true;
 
-	let wall1 = new walls.Sprite(80,32, 160, 48);
+	let wall1 = new walls.Sprite(80,24, 160, 48);
 	let wall2 = new walls.Sprite(188 ,72, 40, 144);
 	let wall3 = new walls.Sprite(208 ,100, 8, 152);
 	let wall4 = new walls.Sprite(184 ,152, 32, 20);
@@ -276,7 +362,7 @@ function setup() {
 	ladders = new Group();
 	ladders.collider = NONE;
 	ladders.friction = 0;
-	ladders.visible = true;
+	ladders.visible = false;
 
 	let fence = new ladders.Sprite(80, 88, 160, 80);
 	let ladder = new ladders.Sprite(232, 136, 4, 88);
@@ -305,6 +391,7 @@ function draw() {
 	checkControllers();
 
 	players.overlapping(ladders, climb);
+
 	p1Hitbox.overlapping(pianoTiles, p1PlayNote);
 	p1Hitbox.overlaps(pianoTiles, p1WalkingNote);
 
