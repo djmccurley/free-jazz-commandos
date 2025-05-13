@@ -4,4 +4,6 @@ Free Jazz Commandos is an interactive musical experience for 1 to 4 players. Ins
 
 The game borrows the visual language of hypermasculine brawlers like Double Dragon, River City Ransom and Streets of Rage. By leaving any goals, outcomes or achievements completely wide open, the experience asks players to reflect on their  built-in expectations  and biases while also inviting them to be present and listen to one another. 
 
-Created in ARTGR 5220: Critical Media, Iowa State University, Spring 2025
+Created in **ARTGR 5220: Critical Media, Iowa State University, Spring 2025**
+
+Graphics: [ChasersGaming via itch.io](https://chasersgaming.itch.io/)
