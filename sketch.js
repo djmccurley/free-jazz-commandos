@@ -38,7 +38,30 @@ let sax,
 	saxNotes,
 	saxKeys;
 
-let beat;
+let beat,
+	beatTiles,
+	atmBeatTile;
+
+let drumTiles,
+	dumpsterDrum,
+	phoneDrum,
+	kick,
+	snare,
+	hh,
+	tom,
+	cymbal;
+
+let phone1,
+	phone2,
+	phone3,
+	phone4,
+	phone5,
+	phone6;
+
+let gong,
+	gongDrum,
+	gong2,
+	gongDrum2;
 
 function preload() {
 	new Canvas(480, 270);
@@ -54,82 +77,95 @@ function preload() {
 
 	donk = new Tone.Sampler({
 		urls: {
-		  C4: "donk.wav"
+			C5: "bassC4.wav",
+			G5: "bassG4.wav",
+			C6: "bassC5.wav"
 		},
 		release: 1,
-		baseUrl: "/audio/"
+		baseUrl: "/audio/sega/"
 	  }).toDestination();
 
 	rhodes = new Tone.Sampler({
 		urls: {
-		  C4: "rhodes.wav"
+		  C3: "pianoC4.wav",
+		  G3: "pianoG4.wav",
+		  C4: "pianoC5.wav",
+		  G4: "pianoG5.wav"
 		},
 		release: .5,
-		baseUrl: "/audio/"
+		baseUrl: "/audio/sega/"
 	  }).toDestination();
 
 	chromeo = new Tone.Sampler({
 		urls: {
-		  C5: "chromeo.wav"
+			C4: "synthC4.wav",
+			G4: "synthG4.wav",
+			C5: "synthC5.wav",
+			G5: "synthG5.wav"
 		},
 		release: .5,
-		baseUrl: "/audio/"
+		baseUrl: "/audio/sega/"
 	  }).toDestination();
 
 	sax = new Tone.Sampler({
 		urls: {
-			// Octave 3
-			"C#3": "Cs3.mp3",
-			"D3": "D3.mp3",
-			"D#3": "Ds3.mp3",
-			"E3": "E3.mp3",
-			"F3": "F3.mp3",
-			"F#3": "Fs3.mp3",
-			"G3": "G3.mp3",
-			"G#3": "Gs3.mp3",
-			"A#3": "As3.mp3",
-			"B3": "B3.mp3",
-			
-			// Octave 4
-			"C4": "C4.mp3",
-			"C#4": "Cs4.mp3",
-			"D4": "D4.mp3",
-			"D#4": "Ds4.mp3",
-			"E4": "E4.mp3",
-			"F4": "F4.mp3",
-			"F#4": "Fs4.mp3",
-			"G4": "G4.mp3",
-			"G#4": "Gs4.mp3",
-			"A4": "A4.mp3",
-			"A#4": "As4.mp3",
-			"B4": "B4.mp3",
-			
-			// Octave 5
-			"C5": "C5.mp3",
-			"C#5": "Cs5.mp3",
-			"D5": "D5.mp3",
-			"D#5": "Ds5.mp3",
-			"E5": "E5.mp3",
-			"F5": "F5.mp3",
-			"F#5": "Fs5.mp3",
-			"G5": "G5.mp3",
-			"G#5": "Gs5.mp3",
-			"A5": "A5.mp3"
+			C4: "fluteC5.wav",
+			G4: "fluteG5.wav",
+			C5: "fluteC6.wav",
+			G5: "fluteG6.wav"
 		  },
 		release: .5,
-		baseUrl: "/audio/sax/"
+		baseUrl: "/audio/sega/"
 		}).toDestination();
 
-	// quena for winds instruments
+// drum instruments
+	snare = new Tone.Player("/audio/sega/sd.wav").toDestination();
+	kick = new Tone.Player("/audio/sega/bd.wav").toDestination();
+	hh = new Tone.Player("/audio/sega/hh.wav").toDestination();
+	tom = new Tone.Player("/audio/sega/tom.wav").toDestination();
+	cymbal = new Tone.Player("/audio/sega/cym2.wav").toDestination();
+	phone1 = new Tone.Player("/audio/sega/1.wav").toDestination();
+	phone2 = new Tone.Player("/audio/sega/2.wav").toDestination();
+	phone3 = new Tone.Player("/audio/sega/3.wav").toDestination();
+	phone4 = new Tone.Player("/audio/sega/4.wav").toDestination();
+	phone5 = new Tone.Player("/audio/sega/sayit.wav").toDestination();
+	phone6 = new Tone.Player("/audio/sega/rhythm.wav").toDestination();
+	gong = new Tone.Player("/audio/sega/rainstick.wav").toDestination();
+	gong2 = new Tone.Player("/audio/sega/gong.wav").toDestination();
 
 
-	beat = new Tone.Player("/audio/beat.wav").toDestination();
-	beat.autostart = true;
+// loop
+	beat = new Tone.Player("/audio/beat2.wav").toDestination();
+	beat.autostart = false;
 	beat.loop = true;
-	beat.volume.value = 6;
-	beat.playbackRate = .88;
+	beat.playbackRate = .825;
 
 	Tone.context.lookAhead = 0;
+
+// EQ Settings
+	beat.volume.value = 5;
+
+	snare.volume.value = 6;
+	kick.volume.value = 6;
+	hh.volume.value = 4;
+	tom.volume.value = 8;
+	cymbal.volume.value = 4;
+	
+	phone1.volume.value = -1;
+	phone2.volume.value = -1;
+	phone3.volume.value = -1;
+	phone4.volume.value = -1;
+	phone5.volume.value = -1;
+	phone6.volume.value = -1;
+	
+	gong.volume.value = 4;
+	gong2.volume.value = 4;
+	
+	donk.volume.value = 0;
+	rhodes.volume.value = 1;
+	chromeo.volume.value = 0;
+	sax.volume.value = 0;
+
 }
 
 function setup() {
@@ -279,7 +315,7 @@ function setup() {
 		bass.note = bassNotes[i];
 		bass.text = bass.note;
 		bass.play = function(note) {
-			donk.triggerAttackRelease(note, 1);
+			donk.triggerAttackRelease(note, .5);
 		  }; 
 	}
 
@@ -326,7 +362,7 @@ function setup() {
 		saxKeys.note = saxNotes[i];
 		saxKeys.text = saxKeys.note;
 		saxKeys.play = function(note) {
-			sax.triggerAttackRelease(note, .5);
+			sax.triggerAttackRelease(note, 2);
 		  };
 		
 
@@ -342,6 +378,94 @@ function setup() {
 		}
 			
 	  }
+
+//drum tiles
+	drumTiles = new musicTiles.Group();
+
+	dumpsterDrum = new drumTiles.Sprite(32, 152, 48, 40);
+	dumpsterDrum.bb = function () {
+		kick.start();
+	};
+	dumpsterDrum.ab = function () {
+		snare.start();
+	};
+	dumpsterDrum.yb = function () {
+		tom.start();
+	};
+	dumpsterDrum.xb = function () {
+		cymbal.start();
+	};
+	dumpsterDrum.lb = function () {
+		hh.start();
+	};
+	dumpsterDrum.rb = function () {
+		hh.start();
+	};
+
+	phoneDrum = new drumTiles.Sprite(176, 172, 42, 32);
+	phoneDrum.bb = function () {
+		phone1.start();
+	};
+	phoneDrum.ab = function () {
+		phone2.start();
+	};
+	phoneDrum.yb = function () {
+		phone3.start();
+	};
+	phoneDrum.xb = function () {
+		phone4.start();
+	};
+	phoneDrum.lb = function () {
+		phone5.start();
+	};
+	phoneDrum.rb = function () {
+		phone6.start();
+	};
+
+	gongDrum = new drumTiles.Sprite(464, 80, 32, 32);
+	gongDrum.bb = function () {
+		gong.start();
+	};
+	gongDrum.ab = function () {
+		gong.start();
+	};
+	gongDrum.yb = function () {
+		gong.start();
+	};
+	gongDrum.xb = function () {
+		gong.start();
+	};
+	gongDrum.lb = function () {
+		gong.start();
+	};
+	gongDrum.rb = function () {
+		gong.start();
+	};
+
+	gongDrum2 = new drumTiles.Sprite(256, 192, 32, 32);
+	gongDrum2.bb = function () {
+		gong2.start();
+	};
+	gongDrum2.ab = function () {
+		gong2.start();
+	};
+	gongDrum2.yb = function () {
+		gong2.start();
+	};
+	gongDrum2.xb = function () {
+		gong2.start();
+	};
+	gongDrum2.lb = function () {
+		gong2.start();
+	};
+	gongDrum2.rb = function () {
+		gong2.start();
+	};
+
+// beatTiles
+	beatTiles = new musicTiles.Group();
+
+	atmBeatTile = new beatTiles.Sprite(216, 188, 16, 40);
 
 
 //walls
@@ -385,6 +509,8 @@ function setup() {
 
 	allSprites.pixelPerfect = true;
 	allSprites.debug = false;
+	//frameRate(40);
+	//p5play.renderStats = true;
 }
 
 ////// DRAW LOOP
@@ -398,15 +524,26 @@ function draw() {
 
 	p1Hitbox.overlapping(pianoTiles, p1PlayNote);
 	p1Hitbox.overlaps(pianoTiles, p1WalkingNote);
+	p1Hitbox.overlapping(drumTiles, p1PlayDrum);
+	p1Hitbox.overlapping(beatTiles, p1PlayBeat);
 
 	p2Hitbox.overlapping(pianoTiles, p2PlayNote);
 	p2Hitbox.overlaps(pianoTiles, p2WalkingNote);
+	p2Hitbox.overlapping(drumTiles, p2PlayDrum);
+	p2Hitbox.overlapping(beatTiles, p2PlayBeat);
 
 	p3Hitbox.overlapping(pianoTiles, p3PlayNote);
 	p3Hitbox.overlaps(pianoTiles, p3WalkingNote);
+	p3Hitbox.overlapping(drumTiles, p3PlayDrum);
+	p3Hitbox.overlapping(beatTiles, p3PlayBeat);
 
 	p4Hitbox.overlapping(pianoTiles, p4PlayNote);
 	p4Hitbox.overlaps(pianoTiles, p4WalkingNote);
+	p4Hitbox.overlapping(drumTiles, p4PlayDrum);
+	p4Hitbox.overlapping(beatTiles, p4PlayBeat);
+
+	// let fps = Math.floor(frameRate());
+	// text(fps, 10, 10);
 }
 
 ////////////////
@@ -770,5 +907,157 @@ function p4WalkingNote(hitbox, pianoTile) {
 			if (contros[3].pressing('lt')) {
 				pianoTile.play(Tonal.Note.transpose(pianoTile.note, "7m"))
 			}
+	}
+}
+
+function p1PlayDrum(hitbox, drumTile) {
+	if (controllers[0]) {
+		if (contros[0].presses('a')) {
+			drumTile.ab();
+		}
+
+		if (contros[0].presses('b')) {
+			drumTile.bb();
+		}
+
+		if (contros[0].presses('rt')) {
+			drumTile.rb();
+		}
+
+		if (contros[0].presses('lt')) {
+			drumTile.lb();
+		}
+
+		if (contros[0].presses('x')) {
+			drumTile.xb();
+		}
+
+		if (contros[0].presses('y')) {
+			drumTile.yb();
+		}
+	}
+}
+
+function p2PlayDrum(hitbox, drumTile) {
+	if (controllers[1]) {
+		if (contros[1].presses('a')) {
+			drumTile.ab();
+		}
+
+		if (contros[1].presses('b')) {
+			drumTile.bb();
+		}
+
+		if (contros[1].presses('rt')) {
+			drumTile.rb();
+		}
+
+		if (contros[1].presses('lt')) {
+			drumTile.lb();
+		}
+
+		if (contros[1].presses('x')) {
+			drumTile.xb();
+		}
+
+		if (contros[1].presses('y')) {
+			drumTile.yb();
+		}
+	}
+}
+
+function p3PlayDrum(hitbox, drumTile) {
+	if (controllers[2]) {
+		if (contros[2].presses('a')) {
+			drumTile.ab();
+		}
+
+		if (contros[2].presses('b')) {
+			drumTile.bb();
+		}
+
+		if (contros[2].presses('rt')) {
+			drumTile.rb();
+		}
+
+		if (contros[2].presses('lt')) {
+			drumTile.lb();
+		}
+
+		if (contros[2].presses('x')) {
+			drumTile.xb();
+		}
+
+		if (contros[2].presses('y')) {
+			drumTile.yb();
+		}
+	}
+}
+
+function p4PlayDrum(hitbox, drumTile) {
+	if (controllers[3]) {
+		if (contros[3].presses('a')) {
+			drumTile.ab();
+		}
+
+		if (contros[3].presses('b')) {
+			drumTile.bb();
+		}
+
+		if (contros[3].presses('rt')) {
+			drumTile.rb();
+		}
+
+		if (contros[3].presses('lt')) {
+			drumTile.lb();
+		}
+
+		if (contros[3].presses('x')) {
+			drumTile.xb();
+		}
+
+		if (contros[3].presses('y')) {
+			drumTile.yb();
+		}
+	}
+}
+
+function p1PlayBeat(hitbox, beatTile) {
+	if (controllers[0]) {
+		if (contros[0].presses('b')) {
+			if (beat.state === "started") {
+				beat.stop();
+			  } else beat.start();
+		}
+	}
+}
+
+function p2PlayBeat(hitbox, beatTile) {
+	if (controllers[1]) {
+		if (contros[1].presses('b')) {
+			if (beat.state === "started") {
+				beat.stop();
+			  } else beat.start();
+		}
+	}
+}
+
+function p3PlayBeat(hitbox, beatTile) {
+	if (controllers[2]) {
+		if (contros[2].presses('b')) {
+			if (beat.state === "started") {
+				beat.stop();
+			  } else beat.start();
+		}
+	}
+}
+
+function p4PlayBeat(hitbox, beatTile) {
+	if (controllers[3]) {
+		if (contros[3].presses('b')) {
+			if (beat.state === "started") {
+				beat.stop();
+			  } else beat.start();
+		}
 	}
 }
